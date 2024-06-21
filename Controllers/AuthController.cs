@@ -57,7 +57,6 @@ namespace MovieTicketAPI.Controllers
                 return Unauthorized("Invalid username or password.");
             }
 
-            // Trả về thông tin vai trò của người dùng
             var response = new LoginResponse
             {
                 Message = "Login successful",

@@ -3,6 +3,7 @@
     using MongoDB.Driver;
     using MovieTicketAPI.Data;
     using MovieTicketAPI.Models;
+    using MovieTicketAPI.Models.State;
     using Microsoft.Extensions.Logging;
     using System.Linq;
 
@@ -33,12 +34,18 @@
                 if (showtime != null)
                 {
                     var seat = showtime.Seats.FirstOrDefault(s => s.Number == ticket.SeatNumber);
-                    if (seat != null && !seat.IsBooked)
+                    if (seat != null)
                     {
-                        seat.IsBooked = true;
-                        _movies.ReplaceOne(m => m.Id == movie.Id, movie);
-                        _tickets.InsertOne(ticket);
-                        return ticket;
+                        var context = new TicketContext(new AvailableState());
+
+                        if (!seat.IsBooked)
+                        {
+                            context.Request(); // chuyển sang trạng thái booked
+                            seat.IsBooked = true;
+                            _movies.ReplaceOne(m => m.Id == movie.Id, movie);
+                            _tickets.InsertOne(ticket);
+                            return ticket;
+                        }
                     }
                 }
             }

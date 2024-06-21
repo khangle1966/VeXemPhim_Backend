@@ -18,6 +18,7 @@ builder.Services.AddSingleton<IMongoClient, MongoClient>(sp =>
 builder.Services.AddScoped<MovieService>();
 builder.Services.AddScoped<TicketService>(); // Register TicketService
 builder.Services.AddScoped<UserService>(); // Register UserService
+builder.Services.AddScoped<ServiceFactory>(); // Register ServiceFactory
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
